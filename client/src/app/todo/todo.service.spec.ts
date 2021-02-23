@@ -4,30 +4,30 @@ import { Todo } from './todo';
 import { HttpClient} from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-describe('TodoService', () => {
+describe('todoService', () => {
   const testTodos: Todo[] = [
-    // test users
+    // test todos
   {
-    _id: '58895985a22c04e761776d54',
+    _id: 'blanche_id',
     owner: 'Blanche',
     status: false,
-    body: 'In sunt ex non tempor cillum commodo amet incididunt anim qui commodo quis. Cillum non labore ex sint esse.',
+    body: 'blah',
     category: 'software design'
   },
   {
-    _id: '58895985c1849992336c219b',
+    _id: 'fry_id',
     owner: 'Fry',
     status: false,
-    body: 'Ipsum esse est ullamco magna tempor anim laborum non officia deserunt veniam commodo. Aute minim incididunt ex commodo.',
+    body: 'blah blah',
     category: 'video games'
   },
   {
-    _id: '58895985ae3b752b124e7663',
-    owner: 'Fry',
+    _id: 'barry_id',
+    owner: 'Barry',
     status: true,
-    body: 'Ullamco irure laborum magna dolor non. Anim occaecat adipisicing cillum eu magna in.',
+    body: 'This is the test body.',
     category: 'homework'
-  },
+  }
 ];
 let todoService: TodoService;
 
@@ -49,7 +49,97 @@ let httpTestingController: HttpTestingController;
     httpTestingController.verify();
   });
 
-  it('should be created', () => {
-    expect(todoService).toBeTruthy();
+  describe('getTodos()', () => {
+
+    it('calls `api/Todos` when `getTodos()` is called with no parameters', () => {
+      todoService.getTodos().subscribe(
+        todo => expect(todo).toBe(testTodos)
+      );
+
+      const req = httpTestingController.expectOne(todoService.todoUrl);
+      expect(req.request.method).toEqual('GET');
+      expect(req.request.params.keys().length).toBe(0);
+      req.flush(testTodos);
+    });
+
+    describe('Calling getTodos() with parameters correctly forms the HTTP request', () => {
+      it('correctly calls api/Todos with filter parameter \'incomplete\'', () => {
+        todoService.getTodos({ status: 'incomplete' }).subscribe(
+          todo => expect(todo).toBe(testTodos)
+        );
+
+        const req = httpTestingController.expectOne(
+          (request) => request.url.startsWith(todoService.todoUrl) && request.params.has('status')
+        );
+
+        expect(req.request.method).toEqual('GET');
+
+        expect(req.request.params.get('status')).toEqual('incomplete');
+
+        req.flush(testTodos);
+      });
+    });
+  });
+
+  describe('getUserByID()', () => {
+    it('calls api/Todos/id with the correct ID', () => {
+      const targetTodo: Todo = testTodos[1];
+      const targetId: string = targetTodo._id;
+
+      todoService.getTodoById(targetId).subscribe(
+        todo => expect(todo).toBe(targetTodo)
+      );
+
+      const expectedUrl: string = todoService.todoUrl + '/' + targetId;
+      const req = httpTestingController.expectOne(expectedUrl);
+      expect(req.request.method).toEqual('GET');
+
+      req.flush(targetTodo);
+    });
+  });
+
+  describe('filterTodos()', () => {
+    it('filters by owner', () => {
+      const todoOwner = 'Fry';
+      const filteredTodos = todoService.filterTodos(testTodos, { owner: todoOwner });
+      expect(filteredTodos.length).toBe(1);
+      filteredTodos.forEach(todo => {
+        expect(todo.owner.indexOf(todoOwner)).toBeGreaterThanOrEqual(0);
+      });
+    });
+
+    it('filters by category', () => {
+      const todoCategory = 'homework';
+      const filteredTodos = todoService.filterTodos(testTodos, { category: todoCategory });
+      expect(filteredTodos.length).toBe(1);
+      filteredTodos.forEach(todo => {
+        expect(todo.category.indexOf(todoCategory)).toBeGreaterThanOrEqual(0);
+      });
+    });
+
+    it('filters by keyWord', () => {
+      const todoKeyWord = 'blah';
+      const filteredTodos = todoService.filterTodos(testTodos, { keyWord: todoKeyWord });
+      expect(filteredTodos.length).toBe(2);
+      filteredTodos.forEach(todo => {
+        expect(todo.body.indexOf(todoKeyWord)).toBeGreaterThanOrEqual(0);
+      });
+    });
+
+    it('filters by owner, category, and keyWord', () => {
+      const todoOwner = 'Barry';
+      const todoCategory = 'homework';
+      const todoKeyWord = 'test';
+      const filters = { owner: todoOwner, category: todoCategory };
+      const filteredTodos = todoService.filterTodos(testTodos, filters);
+      expect(filteredTodos.length).toBe(1);
+      filteredTodos.forEach(todo => {
+        expect(todo.owner.indexOf(todoOwner)).toBeGreaterThanOrEqual(0);
+        expect(todo.category.indexOf(todoCategory)).toBeGreaterThanOrEqual(0);
+        expect(todo.body.indexOf(todoKeyWord)).toBeGreaterThanOrEqual(0);
+      });
+    });
   });
 });
+
+
