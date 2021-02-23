@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Todo } from '../app/todo/todo';
-import { TodoService } from '../app/todo/Todo.service';
+import { TodoService } from '../app/todo/todo.service';
 
 /**
  * A "mock" version of the `TodoService` that can be used to test components
