@@ -19,17 +19,17 @@ export class TodoListComponent implements OnInit {
   constructor(private todoService: TodoService, private snackBar: MatSnackBar) { }
 
   getTodosFromServer() {
-    this.todoService.getTodos({
-      status: this.todoStatus,
-    }).subscribe(returnedTodos => {
-      this.serverFilteredTodos = returnedTodos;
-      this.updateFilter();
-    }, err => {
-      this.snackBar.open(
-        'Problem contacting the server – try again',
-        'OK',
-        { duration: 3000 });
-    });
+      this.todoService.getTodos({
+        status: this.todoStatus
+      }).subscribe(returnedTodos => {
+        this.serverFilteredTodos = returnedTodos;
+        this.updateFilter();
+      }, _err => {
+        this.snackBar.open(
+          'Problem contacting the server – try again',
+          'OK',
+          { duration: 3000 });
+      });
   }
 
   public updateFilter() {

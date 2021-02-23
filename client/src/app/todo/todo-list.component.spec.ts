@@ -74,10 +74,16 @@ describe('TodoListComponent', () => {
   });
 
   it('contains all todos with the status "complete"', () => {
-    expect(todoList.serverFilteredTodos.filter((todo: Todo) => todo.status === true).length).toBe(1);
+    todoList.todoStatus = 'complete';
+    todoList.getTodosFromServer();
+    //expect(todoList.serverFilteredTodos.every((todo: Todo) => todo.status === true)).toBe(true);
+    expect(todoList.serverFilteredTodos.length).toBe(1);
   });
 
   it('contains all todos with the status "incomplete"', () => {
-    expect(todoList.serverFilteredTodos.filter((todo: Todo) => todo.status === false).length).toBe(2);
+    todoList.todoStatus = 'incomplete';
+    todoList.getTodosFromServer();
+    //expect(todoList.serverFilteredTodos.every((todo: Todo) => todo.status === false)).toBe(true);
+    expect(todoList.serverFilteredTodos.length).toBe(2);
   });
 });

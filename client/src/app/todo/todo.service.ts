@@ -14,9 +14,7 @@ export class TodoService {
   getTodos(filters?: { status?: string }): Observable<Todo[]> {
     let httpParams: HttpParams = new HttpParams();
     if (filters) {
-      if (filters.status) {
         httpParams = httpParams.set('status', filters.status);
-      }
     }
     return this.httpClient.get<Todo[]>(this.todoUrl, {
       params: httpParams,
