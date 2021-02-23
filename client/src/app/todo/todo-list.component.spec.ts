@@ -57,15 +57,27 @@ describe('TodoListComponent', () => {
   });
 
 
-  //it('contains all the todos', () => {
-  // expect(todoList.serverFilteredTodos.length).toBe(3);
-  //});
+  it('contains all the todos', () => {
+   expect(todoList.serverFilteredTodos.length).toBe(3);
+  });
 
-  //it('contains all todos with the status "complete"', () => {
-  //  expect(todoList.serverFilteredTodos.some((todo: Todo) => todo.status)).toBe(true);
-  //});
+  it('contains a todo owned by "Blanche"', () => {
+    expect(todoList.serverFilteredTodos.some((todo: Todo) => todo.owner === 'Blanche')).toBe(true);
+  });
 
-  //it('contains all todos with the status "incomplete"', () => {
-  //  expect(todoList.serverFilteredTodos.some((todo: Todo) => todo.status)).toBe(false);
-  //});
+  it('contains a todo owned by "Fry"', () => {
+    expect(todoList.serverFilteredTodos.some((todo: Todo) => todo.owner === 'Fry')).toBe(true);
+  });
+
+  it('doesn\'t contain a user named "Santa"', () => {
+    expect(todoList.serverFilteredTodos.some((todo: Todo) => todo.owner === 'Santa')).toBe(false);
+  });
+
+  it('contains all todos with the status "complete"', () => {
+    expect(todoList.serverFilteredTodos.filter((todo: Todo) => todo.status === true).length).toBe(1);
+  });
+
+  it('contains all todos with the status "incomplete"', () => {
+    expect(todoList.serverFilteredTodos.filter((todo: Todo) => todo.status === false).length).toBe(2);
+  });
 });
