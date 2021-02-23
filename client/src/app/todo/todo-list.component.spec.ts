@@ -15,6 +15,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockTodoService } from 'src/testing/todo.service.mock';
+import { Todo } from './todo';
 import { TodoListComponent } from './todo-list.component';
 import { TodoService } from './todo.service';
 
@@ -37,7 +38,8 @@ const COMMON_IMPORTS: any[] = [
 ];
 
 describe('TodoListComponent', () => {
-  let component: TodoListComponent;
+
+  let todoList: TodoListComponent;
   let fixture: ComponentFixture<TodoListComponent>;
 
   beforeEach(async () => {
@@ -45,17 +47,25 @@ describe('TodoListComponent', () => {
       imports: [COMMON_IMPORTS],
       declarations: [ TodoListComponent ],
       providers: [{ provide: TodoService, useValue: new MockTodoService() }]
-    })
-    .compileComponents();
+    });
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TodoListComponent);
-    component = fixture.componentInstance;
+    todoList = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+
+  //it('contains all the todos', () => {
+  // expect(todoList.serverFilteredTodos.length).toBe(3);
+  //});
+
+  //it('contains all todos with the status "complete"', () => {
+  //  expect(todoList.serverFilteredTodos.some((todo: Todo) => todo.status)).toBe(true);
+  //});
+
+  //it('contains all todos with the status "incomplete"', () => {
+  //  expect(todoList.serverFilteredTodos.some((todo: Todo) => todo.status)).toBe(false);
+  //});
 });
