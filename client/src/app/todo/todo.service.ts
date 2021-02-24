@@ -6,7 +6,7 @@ import { Todo } from './todo';
 
 @Injectable()
 export class TodoService {
-  readonly todoUrl: string = environment.apiUrl + 'todo';
+  readonly todoUrl: string = environment.apiUrl + 'todos';
 
   constructor(private httpClient: HttpClient) {
   }
@@ -14,7 +14,6 @@ export class TodoService {
   getTodos(filters?: { status?: string }): Observable<Todo[]> {
     let httpParams: HttpParams = new HttpParams();
     if (filters) {
-      if (filters.status) {
         httpParams = httpParams.set('status', filters.status);
       }
     }
