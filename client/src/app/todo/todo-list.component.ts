@@ -24,7 +24,7 @@ export class TodoListComponent implements OnInit {
       }).subscribe(returnedTodos => {
         this.serverFilteredTodos = returnedTodos;
         this.updateFilter();
-      }, err => {
+      }, _err => {
         this.snackBar.open(
           'Problem contacting the server – try again',
           'OK',

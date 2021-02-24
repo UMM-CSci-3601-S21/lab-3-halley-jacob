@@ -15,7 +15,6 @@ export class TodoService {
     let httpParams: HttpParams = new HttpParams();
     if (filters) {
         httpParams = httpParams.set('status', filters.status);
-      }
     }
     return this.httpClient.get<Todo[]>(this.todoUrl, {
       params: httpParams,
