@@ -15,7 +15,7 @@ export class TodoListComponent implements OnInit {
   public todoOwner: string;
   public todoCategory: string;
   public todoKeyWord: string;
-  public todoStatus: string;
+  public todoStatus = 'incomplete';
   constructor(private todoService: TodoService, private snackBar: MatSnackBar) { }
 
   getTodosFromServer() {
@@ -25,6 +25,7 @@ export class TodoListComponent implements OnInit {
         this.serverFilteredTodos = returnedTodos;
         this.updateFilter();
       }, _err => {
+        console.log(_err);
         this.snackBar.open(
           'Problem contacting the server – try again',
           'OK',
