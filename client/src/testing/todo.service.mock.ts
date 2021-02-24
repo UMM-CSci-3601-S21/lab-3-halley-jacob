@@ -37,7 +37,9 @@ export class MockTodoService extends TodoService {
     super(null);
   }
 
-  getTodos(filters: { status?: string }): Observable<Todo[]> {
+  // This function should actually filter by status,
+  // but all attempts at getting that to work have failed
+  getTodos(filters?: { status?: string }): Observable<Todo[]> {
     return of(MockTodoService.testTodos);
   }
 
