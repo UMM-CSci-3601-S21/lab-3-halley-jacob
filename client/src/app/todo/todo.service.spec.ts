@@ -81,7 +81,7 @@ let httpTestingController: HttpTestingController;
     });
   });
 
-  describe('getUserByID()', () => {
+  describe('getTodoByID()', () => {
     it('calls api/Todos/id with the correct ID', () => {
       const targetTodo: Todo = testTodos[1];
       const targetId: string = targetTodo._id;
