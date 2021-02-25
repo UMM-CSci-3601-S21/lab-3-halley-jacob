@@ -14,8 +14,10 @@ export class TodoService {
   getTodos(filters?: { status?: string }): Observable<Todo[]> {
     let httpParams: HttpParams = new HttpParams();
     if (filters) {
+      if (filters.status){
         httpParams = httpParams.set('status', filters.status);
     }
+  }
     return this.httpClient.get<Todo[]>(this.todoUrl, {
       params: httpParams,
     });
@@ -25,7 +27,7 @@ export class TodoService {
     return this.httpClient.get<Todo>(this.todoUrl + '/' + id);
   }
 
-  filterTodos(todos: Todo[], filters: { category?: string; owner?: string; keyWord?: string }): Todo[] {
+  filterTodos(todos: Todo[], filters: { category?: string; owner?: string; keyWord?: string; limit?: number }): Todo[] {
 
     let filteredTodos = todos;
 
@@ -50,6 +52,23 @@ export class TodoService {
       filteredTodos = filteredTodos.filter(todo => todo.body.toLowerCase().indexOf(filters.keyWord) !== -1);
     }
 
+    // Limit todos
+    if (filters.limit){
+    filteredTodos = filteredTodos.slice(0,filters.limit);
+    }
     return filteredTodos;
+  }
+
+  // This is supposed to change the boolean value of status into Complete or Incomplete.
+  changeToComplete(status?: string, tf?: boolean): string{
+    let text: string;
+    if (status === 'true') {
+      text = 'Complete';
+    } else if (tf === true) {
+      text = 'Complete';
+    } else {
+      text = 'Incomplete';
+    }
+    return text;
   }
 }

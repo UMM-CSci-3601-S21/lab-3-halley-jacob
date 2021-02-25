@@ -1,5 +1,5 @@
 .todo-cards-container {
-  width: 100%;
+  width: 80%;
   position: relative;
 }
 
@@ -13,4 +13,8 @@
 
 .mat-radio-button {
   margin: 0 12px;
+}
+
+.todo-list-item {
+  max-width: fit-content;
 }

@@ -4,9 +4,10 @@ import { Todo } from './todo';
 import { TodoService } from './todo.service';
 
 @Component({
-  selector: 'app-todo-list',
-  templateUrl: './todo-list.component.html',
-  styleUrls: ['./todo-list.component.scss']
+  selector: 'app-todo-list-component',
+  templateUrl: 'todo-list.component.html',
+  styleUrls: ['./todo-list.component.scss'],
+  providers: []
 })
 export class TodoListComponent implements OnInit {
   public serverFilteredTodos: Todo[];
@@ -15,7 +16,8 @@ export class TodoListComponent implements OnInit {
   public todoOwner: string;
   public todoCategory: string;
   public todoKeyWord: string;
-  public todoStatus = 'incomplete';
+  public todoStatus: string;
+  public todoLimit: number;
   constructor(private todoService: TodoService, private snackBar: MatSnackBar) { }
 
   getTodosFromServer() {
@@ -35,7 +37,13 @@ export class TodoListComponent implements OnInit {
 
   public updateFilter() {
     this.filteredTodos = this.todoService.filterTodos(
-      this.serverFilteredTodos, { owner: this.todoOwner, category: this.todoCategory, keyWord: this.todoKeyWord });
+      this.serverFilteredTodos, { owner: this.todoOwner, category: this.todoCategory, keyWord: this.todoKeyWord, limit: this.todoLimit });
+  }
+
+  // This is supposed to change the boolean value of status into Complete or Incomplete.
+  public changeToComplete(status?: string, tf?: boolean): string {
+    const text: string = this.todoService.changeToComplete(this.todoStatus);
+    return text;
   }
 
   ngOnInit(): void {
